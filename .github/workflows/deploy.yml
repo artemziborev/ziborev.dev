@@ -1,4 +1,4 @@
-name: Deploy Zola site to GitHub Pages
+name: Zola Deploy
 
 on:
   push:
@@ -10,22 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install Zola
-        uses: shalzz/install-zola@v1.1.0
-        with:
-          version: latest
-
-      - name: Build the site
-        run: zola build
+      - uses: actions/checkout@v3
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
-          cname: ziborev.dev
-          force_orphan: true
+        uses: shalzz/zola-deploy-action@v0.16.1
+        env:
+          BUILD_DIR: public
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          CNAME: ziborev.dev
